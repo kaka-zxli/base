@@ -1,0 +1,97 @@
+body {
+    font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
+    color: #333;
+    background: #f4f4f4;
+}
+
+.navbar {
+    min-height: 40px;
+}
+
+.navbar .navbar-brand {
+    height: 40px;
+    padding: 10px 15px;
+    width: 220px;
+    text-align: center;
+}
+
+.navbar-left > a {
+    padding-left: 10px;
+    margin-top: 8px;
+    float: left;
+}
+
+.navbar-nav > li > a {
+    padding-top: 12px;
+    padding-bottom: 8px;
+}
+
+.navbar .dropdown-toggle > i, .navbar-left > a {
+    font-size: 16px;
+}
+
+.navbar .dropdown-menu {
+    min-width: 200px;
+}
+
+.dropdown-menu > .header {
+    padding: 6px;
+    margin-top: -5px;
+    background-color: #eee;
+}
+
+.glyphicon {
+    top: 3px;
+}
+
+.navbar .badge {
+    position: absolute;
+    font-size: 11px !important;
+    font-weight: 300;
+    top: 5px;
+    left: 24px;
+    text-align: center;
+    height: 14px;
+    background-color: #e02222;
+    padding: 0px 5px 2px 5px;
+    -webkit-border-radius: 12px !important;
+    -moz-border-radius: 12px !important;
+    border-radius: 12px !important;
+    text-shadow: none !important;
+}
+
+.footer {
+    margin: 50px 0;
+    padding: 20px 0;
+    color: #ccc;
+    font-size: 12px;
+    border-top: solid #ccc 1px;
+    text-align: center;
+}
+
+.skinblue .navbar {
+    background-color: #3c8dbc;
+}
+
+.skinblue .navbar-left > a:hover {
+    color: #ffffff;
+}
+
+.skinblue .navbar-left > a, .skinblue .navbar .navbar-brand, .skinblue .navbar .dropdown > a {
+    color: #f9f9f9;
+}
+
+.skinblue .navbar .navbar-brand, .skinblue .nav > li > a:hover, .skinblue .nav > li > a:focus, .skinblue .nav .open > a {
+    background-color: #357ca5
+}
+
+.page-container {
+    padding: 0px;
+    margin: 41px 0px 0px;
+}
+
+.page-sidebar {
+    width: 220px;
+    background-color: #3d3d3d;
+    position: absolute;
+}
