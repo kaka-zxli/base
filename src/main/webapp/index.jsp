@@ -19,7 +19,7 @@
         <a class="navbar-brand" href="#">kaka'project</a>
 
         <div class="navbar-left">
-            <a href="#"><i class="glyphicon glyphicon-align-justify"></i></a>
+            <a href="#page-sidebar" data-toggle="collapse"><i class="glyphicon glyphicon-align-justify"></i></a>
         </div>
         <ul class="navbar-right nav navbar-nav">
             <li class="dropdown">
@@ -67,13 +67,13 @@
                     <span>kaka <i class="caret"></i></span>
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a href="extra_profile.html"><i class="glyphicon glyphicon-user"></i> My Profile</a></li>
-                    <li><a href="page_calendar.html"><i class="glyphicon glyphicon-calendar"></i> My Calendar</a></li>
-                    <li><a href="inbox.html"><i class="glyphicon glyphicon-envelope"></i> My Inbox(3)</a></li>
+                    <li><a href="#"><i class="glyphicon glyphicon-user"></i> My Profile</a></li>
+                    <li><a href="#"><i class="glyphicon glyphicon-calendar"></i> My Calendar</a></li>
+                    <li><a href="#"><i class="glyphicon glyphicon-envelope"></i> My Inbox(3)</a></li>
                     <li><a href="#"><i class="glyphicon glyphicon-tasks"></i> My Tasks</a></li>
                     <li class="divider"></li>
-                    <li><a href="extra_lock.html"><i class="glyphicon glyphicon-lock"></i> Lock Screen</a></li>
-                    <li><a href="login.html"><i class="glyphicon glyphicon-log-out"></i> Log Out</a></li>
+                    <li><a href="#"><i class="glyphicon glyphicon-lock"></i> Lock Screen</a></li>
+                    <li><a href="#"><i class="glyphicon glyphicon-log-out"></i> Log Out</a></li>
                 </ul>
             </li>
         </ul>
@@ -81,101 +81,47 @@
 </div>
 
 <div class="page-container">
-    <div class="page-sidebar">
-        <div class="panel-group" id="accordion">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a data-toggle="collapse" href="#collapseOne">
-                            Collapsible Group Item #1
-                        </a>
-                    </h4>
-                </div>
-                <div id="collapseOne" class="panel-collapse collapse">
-                    <div class="list-group">
-                        <a href="#" class="list-group-item active">
-                            Cras justo odio
-                        </a>
-                        <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
-                        <a href="#" class="list-group-item">Morbi leo risus</a>
-                        <a href="#" class="list-group-item">Porta ac consectetur ac</a>
-                        <a href="#" class="list-group-item">Vestibulum at eros</a>
-                    </div>
-                </div>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a data-toggle="collapse" href="#collapse2">
-                            Collapsible Group Item #2
-                        </a>
-                    </h4>
-                </div>
-                <div id="collapse2" class="panel-collapse collapse">
-                    <div class="list-group">
-                        <a href="#" class="list-group-item active">
-                            Cras justo odio
-                        </a>
-                        <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
-                        <a href="#" class="list-group-item">Morbi leo risus</a>
-                        <a href="#" class="list-group-item">Porta ac consectetur ac</a>
-                        <a href="#" class="list-group-item">Vestibulum at eros</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <a class="panel-title" style="display: block" data-toggle="collapse" href="#"> Group Item #3</a>
-                </div>
-            </div>
-        </div>
+    <div id="page-sidebar" class="page-sidebar collapse in">
         <ul class="nav nav-pills nav-stacked">
-            <li role="presentation" class="active"><a href="#">Home</a></li>
-            <li role="presentation"><a href="#">Profile</a></li>
+            <li>
+                <a data-toggle="collapse" href="#collapseOne">
+                    Collapsible Group Item #1
+                </a>
+                <ul id="collapseOne" class="nav nav-pills nav-stacked collapse">
+                    <li>
+                        <a data-toggle="collapse" href="#collapseOne3">
+                            Collapsibl Item #3
+                        </a>
+                        <ul id="collapseOne3" class="nav nav-pills nav-stacked collapse">
+                            <li><a>Cras justo odio</a></li>
+                            <li><a>Cras justo odio</a></li>
+                            <li><a>Cras justo odio</a></li>
+                        </ul>
+                    </li>
+                    <li><a>Cras justo odio</a></li>
+                    <li><a>Cras justo odio</a></li>
+                    <li><a>Cras justo odio</a></li>
+                </ul>
+            </li>
+            <li><a>Cras justo odio2</a></li>
+            <li><a>Cras justo odio3</a></li>
+            <li><a>Cras justo odio4</a></li>
         </ul>
 
-        <%--<ul class="page-sidebar-menu">--%>
-        <%--<li class="start active ">--%>
-        <%--<a href="index.html">--%>
-        <%--<i class="icon-home"></i>--%>
-        <%--<span class="title">Dashboard</span>--%>
-        <%--<span class="selected"></span>--%>
-        <%--</a>--%>
-        <%--</li>--%>
 
-        <%--<li class="">--%>
-        <%--<a href="javascript:;">--%>
-        <%--<i class="icon-cogs"></i>--%>
-        <%--<span class="title">Layouts</span>--%>
-        <%--<span class="arrow "></span>--%>
-        <%--</a>--%>
-        <%--<ul class="sub-menu">--%>
-        <%--<li>--%>
-        <%--<a href="layout_ajax.html">--%>
-        <%--Content Loading via Ajax</a>--%>
-        <%--</li>--%>
-        <%--<li>--%>
-        <%--<a href="layout_sidebar_closed.html">--%>
-        <%--Sidebar Closed Page</a>--%>
-        <%--</li>--%>
-        <%--<li>--%>
-        <%--<a href="layout_blank_page.html">--%>
-        <%--Blank Page</a>--%>
-        <%--</li>--%>
-        <%--<li>--%>
-        <%--<a href="layout_boxed_page.html">--%>
-        <%--Boxed Page</a>--%>
-        <%--</li>--%>
-        <%--<li>--%>
-        <%--<a href="layout_boxed_not_responsive.html">--%>
-        <%--Non-Responsive Boxed Layout</a>--%>
-        <%--</li>--%>
-        <%--</ul>--%>
-        <%--</li>--%>
-        <%--</ul>--%>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <a data-toggle="collapse" href="#collapseOne5">Dapibus1</a>
+                <ul id="collapseOne5" class="list-group collapse">
+                    <li class="list-group-item"><a href="#">Dapibus4</a></li>
+                    <li class="list-group-item"><a href="#">Dapibus5</a></li>
+                    <li class="list-group-item"><a href="#">Dapibus6</a></li>
+                </ul>
+            </li>
+            <li class="list-group-item"><a href="#">Dapibus2</a></li>
+            <li class="list-group-item"><a href="#">Dapibus3</a></li>
+        </ul>
     </div>
-
 
     <%--<div class="footer">©2014 kaka base project v0.1.demo</div>--%>
 </div>
