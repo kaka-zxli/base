@@ -1,9 +1,46 @@
+<%@ page import="java.util.HashMap" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
 <%--
   User: Kaka, Date: 2014/10/26, Time: 11:16.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<%
+    // 模拟菜单数据
+    List first = new ArrayList();
+    for (int i = 1; i < 5; i++) {
+        Map bean = new HashMap();
+        bean.put("id", i);
+        bean.put("name", "系统管理" + i);
+
+        if (i % 2 == 0) {
+            List second = new ArrayList();
+            for (int k = 10; k < 5; k++) {
+                Map s = new HashMap();
+                s.put("id", k);
+                s.put("name", "部门管理" + i);
+                second.add(s);
+            }
+            bean.put("children", second);
+        }
+
+        first.add(bean);
+    }
+
+    session.setAttribute("menus", first);
+%>
+
 <div id="page-sidebar" class="page-sidebar collapse in">
     <ul class="firstMenu nav nav-pills nav-stacked">
+        <c:forEach items="${sessionScope.menus}" var="menu">
+            <li><a href="#">${menu.name}</a></li>
+        </c:forEach>
+
+
+
         <li><a href="#">
             <i class="glyphicon glyphicon-home"></i>
             <span class="title">首页</span>
