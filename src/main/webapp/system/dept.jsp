@@ -1,5 +1,5 @@
 <%--
-  User: Kaka, Date: 2014/10/19, Time: 12:22.
+  User: Kaka, Date: 2014/10/26, Time: 10:44.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
@@ -16,7 +16,7 @@
 <div class="page-container">
     <%@include file="/common/sidebar.jsp" %>
     <div class="page-main">
-
+        部门管理
     </div>
 </div>
 <%@include file="/common/footer.jsp" %>

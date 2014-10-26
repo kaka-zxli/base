@@ -10,8 +10,6 @@
     <title>kaka's base project</title>
     <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css">
     <link type="text/css" rel="stylesheet" href="css/common.css">
-    <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <style>
         html {
             background: url(image/201111816166.jpg) no-repeat center center fixed;
@@ -73,12 +71,12 @@
         </div>
     </div>
 </div>
-<div class="footer">©2014 kaka base project v0.1.demo</div>
+<%@include file="/common/footer.jsp" %>
 </body>
 
 <script type="text/javascript">
-    function login(){
-        location.href="index.jsp";
+    function login() {
+        location.href = "index.jsp";
     }
 </script>
 
