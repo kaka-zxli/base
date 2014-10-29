@@ -119,7 +119,7 @@ body {
 }
 
 .firstMenu li a:hover {
-    background: #d8d8d8;
+    background: #e3e3e3;
 }
 
 .firstMenu.nav-pills > li > a:hover {
@@ -130,8 +130,9 @@ body {
 }
 
 .firstMenu.nav-pills > li.open > a {
-    background-color: #e5e5e5;
+    background-color: #d7d7d7;
 }
+
 .firstMenu.nav-pills > li.active > a {
     background: #3c8dbc;
     color: #fff;
@@ -153,9 +154,19 @@ body {
     color: #000;
 }
 
+.firstMenu > li > .nav > li > a > .selected {
+    width: 8px;
+    height: 25px;
+    background-image: url("/image/sidebar-menu-arrow.png");
+    float: right;
+    position: absolute;
+    right: 0;
+    top: 4px;
+}
+
 .firstMenu > li > .nav > li.active > a {
-    background: rgba(43, 132, 167, 0.34);
-    color: #000;
+    background: #3c8dbc;
+    color: #fff;
 }
 
 .firstMenu > li.active > a > .selected {

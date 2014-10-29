@@ -16,7 +16,7 @@
 <div class="page-container">
     <%@include file="/common/sidebar.jsp" %>
     <div class="page-main">
-        部门管理
+        部门管理${param.fid}${param.sid}
     </div>
 </div>
 <%@include file="/common/footer.jsp" %>

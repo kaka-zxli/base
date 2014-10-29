@@ -18,10 +18,10 @@
 
         if (i % 2 == 0) {
             List second = new ArrayList();
-            for (int k = 10; k < 5; k++) {
+            for (int k = 1; k < 5; k++) {
                 Map s = new HashMap();
-                s.put("id", k);
-                s.put("name", "部门管理" + i);
+                s.put("id", "" + k + i);
+                s.put("name", "部门管理" + i + k);
                 second.add(s);
             }
             bean.put("children", second);
@@ -36,53 +36,55 @@
 <div id="page-sidebar" class="page-sidebar collapse in">
     <ul class="firstMenu nav nav-pills nav-stacked">
         <c:forEach items="${sessionScope.menus}" var="menu">
-            <li><a href="#">${menu.name}</a></li>
+            <c:if test="${menu.children == null}">
+                <li ${param.fid == menu.id ? "class='active'" : ""}>
+                    <a href="/system/dept.jsp?fid=${menu.id}">
+                        <i class="glyphicon glyphicon-home"></i>
+                        <span class="title">${menu.name}</span>
+                        <c:if test="${param.fid == menu.id}">
+                            <span class="selected"></span>
+                        </c:if>
+                    </a>
+                </li>
+            </c:if>
+            <c:if test="${menu.children != null}">
+                <li ${param.fid == menu.id ? "class='open'" : ""}>
+                    <a href="#menu${menu.id}" data-toggle="collapse" onclick="linkSecondMenu(this)">
+                        <i class="glyphicon glyphicon-home"></i>
+                        <span class="title">${menu.name}</span>
+                        <i class="arrow glyphicon glyphicon-chevron-${param.fid == menu.id ? "down" : "left"}"></i>
+                    </a>
+                    <ul id="menu${menu.id}"
+                        class="nav nav-pills nav-stacked collapse ${param.fid == menu.id ? "in" : ""}">
+                        <c:forEach items="${menu.children}" var="children">
+                            <li ${param.sid == children.id ? "class='active'" : ""}>
+                                <a href="/system/dept.jsp?fid=${menu.id}&sid=${children.id}">
+                                        ${children.name}
+                                    <c:if test="${param.sid == children.id}">
+                                        <span class="selected"></span>
+                                    </c:if>
+                                </a>
+                            </li>
+                        </c:forEach>
+                    </ul>
+                </li>
+            </c:if>
         </c:forEach>
-
-
-
-        <li><a href="#">
-            <i class="glyphicon glyphicon-home"></i>
-            <span class="title">首页</span>
-        </a></li>
-        <li class="active">
-            <a href="#collapseOne" data-toggle="collapse">
-                <i class="glyphicon glyphicon-cog"></i>
-                <span class="title">系统管理</span>
-                <i class="arrow glyphicon glyphicon-chevron-down"></i>
-                <span class="selected"></span>
-            </a>
-            <ul id="collapseOne" class="nav nav-pills nav-stacked collapse in">
-                <li class="active"><a>部门管理</a></li>
-                <li><a>员工管理</a></li>
-                <li><a>角色管理</a></li>
-            </ul>
-        </li>
-        <li class="open">
-            <a href="#collapseOne2" data-toggle="collapse">
-                <i class="glyphicon glyphicon-user"></i>
-                <span class="title">人事行政</span>
-                <i class="arrow glyphicon glyphicon-chevron-left"></i>
-            </a>
-
-            <ul id="collapseOne2" class="nav nav-pills nav-stacked collapse">
-                <li><a>部门管理</a></li>
-                <li><a>员工管理</a></li>
-                <li><a>角色管理</a></li>
-            </ul>
-        </li>
-        <li>
-            <a href="#collapseOne3" data-toggle="collapse">
-                <i class="glyphicon glyphicon-user"></i>
-                <span class="title">人事行政</span>
-                <i class="arrow glyphicon glyphicon-chevron-left"></i>
-            </a>
-
-            <ul id="collapseOne3" class="nav nav-pills nav-stacked collapse">
-                <li><a>部门管理</a></li>
-                <li><a>员工管理</a></li>
-                <li><a>角色管理</a></li>
-            </ul>
-        </li>
     </ul>
 </div>
+
+<script type="text/javascript">
+    function linkSecondMenu(obj) {
+        var li = $(obj).parent();
+        var arrow = $(obj).find(".arrow:first");
+        if (li.hasClass("open")) {
+            li.removeClass("open");
+            arrow.removeClass("glyphicon-chevron-down");
+            arrow.addClass("glyphicon-chevron-left");
+        } else {
+            li.addClass("open");
+            arrow.removeClass("glyphicon-chevron-left");
+            arrow.addClass("glyphicon-chevron-down");
+        }
+    }
+</script>
