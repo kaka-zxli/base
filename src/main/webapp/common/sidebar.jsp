@@ -38,7 +38,7 @@
         <c:forEach items="${sessionScope.menus}" var="menu">
             <c:if test="${menu.children == null}">
                 <li ${param.fid == menu.id ? "class='active'" : ""}>
-                    <a href="/system/dept.jsp?fid=${menu.id}">
+                    <a href="${pageContext.request.contextPath}/system/dept.jsp?fid=${menu.id}">
                         <i class="glyphicon glyphicon-home"></i>
                         <span class="title">${menu.name}</span>
                         <c:if test="${param.fid == menu.id}">
@@ -58,7 +58,7 @@
                         class="nav nav-pills nav-stacked collapse ${param.fid == menu.id ? "in" : ""}">
                         <c:forEach items="${menu.children}" var="children">
                             <li ${param.sid == children.id ? "class='active'" : ""}>
-                                <a href="/system/dept.jsp?fid=${menu.id}&sid=${children.id}">
+                                <a href="${pageContext.request.contextPath}/system/dept.jsp?fid=${menu.id}&sid=${children.id}">
                                         ${children.name}
                                     <c:if test="${param.sid == children.id}">
                                         <span class="selected"></span>
