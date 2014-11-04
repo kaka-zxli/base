@@ -11,13 +11,28 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
+        <servlet.version>3.1.0</servlet.version>
         <spring.version>4.1.0.RELEASE</spring.version>
+        <hibernate.version>4.3.7.Final</hibernate.version>
         <jackson.version>2.4.2</jackson.version>
         <slf4j.version>1.5.8</slf4j.version>
         <log4j.version>1.2.14</log4j.version>
     </properties>
 
     <dependencies>
+        <!-- servlet+jstl begin-->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${servlet.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <!-- servlet+jstl end-->
+
         <!-- Spring begin-->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -38,6 +53,16 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
             <version>${spring.version}</version>
         </dependency>
         <!-- Spring end-->
@@ -83,17 +108,22 @@
         </dependency>
         <!-- slf4j+log4j end-->
 
-        <!-- servlet+jstl begin-->
+        <!--<dependency>-->
+            <!--<groupId>org.hibernate</groupId>-->
+            <!--<artifactId>hibernate-core</artifactId>-->
+            <!--<version>4.3.7.Final</version>-->
+        <!--</dependency>-->
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>3.1.0</version>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${hibernate.version}</version>
         </dependency>
+
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-            <version>1.2</version>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.33</version>
         </dependency>
-        <!-- servlet+jstl end-->
+
     </dependencies>
 </project>
