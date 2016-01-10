@@ -45,6 +45,10 @@
 			$('#leftNav li a').click(function() {
 				$('#leftNav li a').removeClass("selected");
 				$(this).addClass("selected");
+				$("div[class='panel combo-p']").remove();
+				$("div[class='panel window']").remove();
+				$('.window-shadow').remove();
+				$('.window-mask').remove();
 				$("#mainTitle").text($(this).text());
 				$("#mainPanel").panel("refresh",  $(this).attr("url"));
 			});

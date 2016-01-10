@@ -19,4 +19,9 @@
 	<mvc:default-servlet-handler />
 
 	<aop:aspectj-autoproxy proxy-target-class="true" />
+
+	<!-- 统一异常处理 -->
+	<bean id="exceptionHandler" class="com.kaka.base.resolver.BaseHandlerExceptionResolver">
+		<property name="defaultErrorMessage" value="系统繁忙，请稍后再试。" />
+	</bean>
 </beans>

@@ -57,6 +57,7 @@ public class RoleService {
 
 	@Transactional
 	public void delete(long id) {
+		// TODO 需要检测是否有用户在使用这个角色
 		roleDao.delete(id);
 		roleMenuService.deleteByRole(id);
 	}

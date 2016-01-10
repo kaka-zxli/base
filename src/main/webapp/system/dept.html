@@ -13,6 +13,152 @@
 <script type="text/javascript" src="js/common.js"></script>
 </head>
 <body>
-	部门管理
+	<table id="grid" class="easyui-datagrid" data-options="fit:true,rownumbers:true,singleSelect:true,toolbar:toolbar">
+		<thead>
+			<tr>
+				<th data-options="field:'name',width:280">部门名称</th>
+				<th data-options="field:'parentName',width:280">上级部门</th>
+				<th data-options="field:'id',width:180,formatter:operateFmt">操作</th>
+			</tr>
+		</thead>
+	</table>
+	<div id="dlg" class="easyui-dialog" style="width: 400px; height: 460px; padding: 10px"
+		data-options=" modal: true, closed: true,
+                buttons: [{
+                    text:'保 存 ',
+                    iconCls:'icon-ok',
+                    handler:save
+                },{
+                    text:'取 消',
+                    handler:cancel
+                }] ">
+		<form id='ff'>
+			<table>
+				<tr>
+					<td class="fromTitle">部门名称：</td>
+					<td><input id="deptName" name="deptName" class="easyui-textbox" type="text" data-options="required:true"></input></td>
+				</tr>
+				<tr>
+					<td class="fromTitle">上级部门：</td>
+					<td><input id="cc" class="easyui-combotree" data-options="required:true"></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<script type="text/javascript">
+		var deptId = null;
+		var toolbar = [ {
+			text : '新增',
+			iconCls : 'icon-add',
+			handler : add
+		} ];
+
+		$(function() {
+			query();
+			queryTree();
+		})
+
+		function query() {
+			sendPOST("dept/all.kk", null, function(data) {
+				$("#grid").datagrid({
+					data : data
+				});
+			})
+		}
+
+		function queryTree() {
+			sendPOST("dept/all_tree.kk", null, function(data) {
+				data.splice(0, 0, {
+					id : -1,
+					text : "无"
+				});
+				$('#cc').combotree('loadData', data);
+			})
+		}
+
+		function add() {
+			deptId = null;
+			$('#dlg').dialog({
+				title : '新增部门'
+			});
+			resetTree();
+			$('#ff').form('clear');
+			$('#dlg').dialog('open');
+		}
+
+		function edit(id) {
+			deptId = id;
+			$('#dlg').dialog({
+				title : '编辑部门'
+			});
+			resetTree();
+			sendPOST("dept/get.kk", {
+				id : id
+			}, function(data) {
+				$('#ff').form('load', {
+					deptName : data.name
+				});
+				$('#cc').combotree('setValue', data.parentId);
+				$('#dlg').dialog('open');
+			})
+		}
+
+		function save() {
+			var deptName = $('#deptName').val().trim();
+			if (!deptName) {
+				showMsg("部门名称不能为空");
+				return;
+			}
+			var node = $('#cc').combotree('tree').tree('getSelected');
+			if (!node) {
+				showMsg("上级部门不能为空");
+				return;
+			}
+			var parentId = node.id;
+			var url = null;
+			if (!deptId) {
+				url = "dept/create.kk";
+			} else {
+				url = "dept/update.kk";
+			}
+			sendPOST(url, {
+				id : deptId,
+				name : deptName,
+				parentId : parentId
+			}, function(data) {
+				query();
+				queryTree();
+				$('#dlg').dialog('close');
+				showMsg("操作成功");
+			})
+		}
+
+		function del(id) {
+			$.messager.confirm('确认', '确定删除吗?', function(r) {
+				if (r) {
+					sendPOST("dept/delete.kk", {
+						id : id
+					}, function(data) {
+						query();
+						queryTree();
+						showMsg("操作成功");
+					})
+				}
+			});
+		}
+
+		function operateFmt(val) {
+			return '<a href="javascript:void(0)" onclick="edit(' + val + ')">编辑</a>'
+					+ ' <a href="javascript:void(0)" onclick="del(' + val + ')">删除</a>';
+		}
+
+		function cancel() {
+			$('#dlg').dialog('close');
+		}
+
+		function resetTree() {
+			$('#cc').combotree('tree').tree("expandAll");
+		}
+	</script>
 </body>
 </html>

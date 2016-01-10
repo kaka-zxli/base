@@ -54,7 +54,6 @@ public class RoleController {
 	@RequestMapping("/delete")
 	@ResponseBody
 	public JsonResponse delete(Long id) {
-		// TODO 需要检测是否有用户在使用这个角色
 		roleService.delete(id);
 		return JsonResponse.success();
 	}
