@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>kaka's base project</title>
+<link rel="stylesheet" type="text/css" href="easyui/themes/metro/easyui.css">
+<link rel="stylesheet" type="text/css" href="easyui/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="css/common.css">
+<script type="text/javascript" src="easyui/jquery.min.js"></script>
+<script type="text/javascript" src="easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="easyui/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+</head>
+<body>
+	<table id="roleGrid" class="easyui-datagrid" data-options="fit:true,rownumbers:true,singleSelect:true,toolbar:toolbar">
+		<thead>
+			<tr>
+				<th data-options="field:'name',width:280">角色名称</th>
+				<th data-options="field:'id',width:180,formatter:operateFmt">操作</th>
+			</tr>
+		</thead>
+	</table>
+
+	<div id="dlg" class="easyui-dialog" style="width: 400px; height: 460px; padding: 10px"
+		data-options=" modal: true, closed: true,
+                buttons: [{
+                    text:'保 存 ',
+                    iconCls:'icon-ok',
+                    handler:save
+                },{
+                    text:'取 消',
+                    handler:cancel
+                }] ">
+		<form id='ff'>
+			<table>
+				<tr>
+					<td class="fromTitle">角色名称：</td>
+					<td><input id="roleName" name="roleName" class="easyui-textbox" type="text" data-options="required:true"></input></td>
+				</tr>
+				<tr>
+					<td class="fromTitle">菜单功能：</td>
+					<td><ul id="menuTree" class="easyui-tree" data-options="animate:true,checkbox:true"></ul></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<script type="text/javascript">
+		var roleId = null;
+		var toolbar = [ {
+			text : '新增',
+			iconCls : 'icon-add',
+			handler : add
+		} ];
+
+		$(function() {
+			queryRole();
+			queryMenuTree();
+		})
+
+		function queryRole() {
+			sendPOST("role/all.kk", null, function(data) {
+				$("#roleGrid").datagrid({
+					data : data
+				});
+			})
+		}
+
+		function queryMenuTree() {
+			sendPOST("menu/all_tree.kk", null, function(data) {
+				$("#menuTree").tree({
+					data : data,
+					formatter : function(node) {
+						return node.name;
+					}
+				});
+			})
+		}
+
+		function add() {
+			roleId = null;
+			$('#dlg').dialog({
+				title : '新增角色'
+			});
+			resetTree();
+			$('#ff').form('clear');
+			$('#dlg').dialog('open');
+		}
+
+		function edit(id) {
+			roleId = id;
+			$('#dlg').dialog({
+				title : '编辑角色'
+			});
+			resetTree();
+			sendPOST("role/get.kk", {
+				id : id
+			}, function(data) {
+				$('#ff').form('load', {
+					roleName : data.name
+				});
+				var roleMenus = data.roleMenus;
+				for (var i = 0; i < roleMenus.length; i++) {
+					var node = $('#menuTree').tree('find', roleMenus[i].menuId);
+					if ($('#menuTree').tree('getChildren', node.target) == "") {
+						$('#menuTree').tree('check', node.target);
+					}
+				}
+				$('#dlg').dialog('open');
+			})
+		}
+
+		function save() {
+			var roleName = $('#roleName').val().trim();
+			if (!roleName) {
+				showMsg("角色名称不能为空");
+				return;
+			}
+			var url = null;
+			if (!roleId) {
+				url = "role/create.kk";
+			} else {
+				url = "role/update.kk";
+			}
+			sendPOST(url, {
+				id : roleId,
+				name : roleName,
+				menuIds : getMenuIdStr()
+			}, function(data) {
+				queryRole();
+				$('#dlg').dialog('close');
+				showMsg("操作成功");
+			})
+		}
+
+		function del(id) {
+			$.messager.confirm('确认', '确定删除吗?', function(r) {
+				if (r) {
+					sendPOST("role/delete.kk", {
+						id : id
+					}, function(data) {
+						queryRole();
+						showMsg("操作成功");
+					})
+				}
+			});
+		}
+
+		function operateFmt(val) {
+			return '<a href="javascript:void(0)" onclick="edit(' + val + ')">编辑</a>'
+					+ ' <a href="javascript:void(0)" onclick="del(' + val + ')">删除</a>';
+		}
+
+		function cancel() {
+			$('#dlg').dialog('close');
+		}
+
+		//取得被选择的菜单的id
+		function getMenuIdStr() {
+			var ids = [];
+			var nodes = $('#menuTree').tree('getChecked', [ 'checked', 'indeterminate' ]);
+			for (var i = 0; i < nodes.length; i++) {
+				ids.push(nodes[i].id);
+			}
+			return ids.toString();
+		}
+
+		function resetTree() {
+			$("#menuTree").tree("expandAll");
+			var nodes = $('#menuTree').tree('getChecked', [ 'checked', 'indeterminate' ]);
+			for (var i = 0; i < nodes.length; i++) {
+				$('#menuTree').tree('uncheck', nodes[i].target);
+			}
+		}
+	</script>
+</body>
+</html>

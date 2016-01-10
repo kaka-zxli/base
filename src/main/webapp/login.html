@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>kaka's base project</title>
+<link rel="stylesheet" type="text/css" href="easyui/themes/metro/easyui.css">
+<link rel="stylesheet" type="text/css" href="easyui/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="css/login.css">
+<script type="text/javascript" src="easyui/jquery.min.js"></script>
+<script type="text/javascript" src="easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="easyui/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+</head>
+<body>
+	<div class="content" id="login-window">
+		<div class="denglu">
+			<ul>
+				<li>
+					<div class="logintext">用户：</div> <input class="loginuser" type="text" id="email" name="email" />
+				</li>
+				<li>
+					<div class="logintext">密码：</div> <input class="loginuser" id="password" name="password" type="password" />
+				</li>
+				<li class="anniu">
+					<button class="btn btn-success btn-lg" onclick="login()">登 录</button>
+				</li>
+			</ul>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	function login() {
+		sendPOST("auth.kk", null, function() {
+			location.href = "index.html";
+		});
+	}
+</script>
+</html>

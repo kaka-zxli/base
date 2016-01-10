@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>kaka's base project</title>
+<link rel="stylesheet" type="text/css" href="easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="easyui/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="css/common.css">
+<script type="text/javascript" src="easyui/jquery.min.js"></script>
+<script type="text/javascript" src="easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="easyui/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+</head>
+<body class="easyui-layout">
+	<div data-options="region:'north'" style="height: 50px">除霾系统</div>
+	<div data-options="region:'west',split:true" title="功能导航" style="width: 200px;">
+		<div id="leftNav" class="easyui-accordion" data-options="fit: true, border: false"></div>
+	</div>
+	<div data-options="region: 'center'">
+		<div id="mainTitle"></div>
+		<div id="mainPanel" class="easyui-panel" data-options="fit: true, border: false"></div>
+	</div>
+</body>
+<script type="text/javascript">
+	$(function() {
+		sendPOST("menu/user.kk", {}, function(data) {
+			$.each(data, function(i, n) {
+				var content = '<ul>';
+				var isSelected = false;
+				$.each(n.children, function(j, o) {
+					content += '<li><a href="javascript:void(0)" url="' + o.url + '">' + o.name + '</a></li> ';
+				});
+				content += '</ul>';
+				if (i == 0) {
+					isSelected = true;
+				}
+				$('#leftNav').accordion('add', {
+					title : n.name,
+					content : content,
+					selected : isSelected
+				});
+			});
+
+			$('#leftNav li a').click(function() {
+				$('#leftNav li a').removeClass("selected");
+				$(this).addClass("selected");
+				$("#mainTitle").text($(this).text());
+				$("#mainPanel").panel("refresh",  $(this).attr("url"));
+			});
+		});
+	})
+</script>
+</html>
