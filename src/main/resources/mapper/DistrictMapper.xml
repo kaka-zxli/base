@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kaka.base.dao.IDistrictDao">
+
+	<insert id="create" parameterType="com.kaka.base.domain.District" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_district(
+			name, memo, create_time, create_by
+		)
+		values(
+			#{name}, #{memo}, now(), #{createBy}
+		)
+	</insert>
+	
+	<delete id="delete">
+		delete from sys_district where id = #{id}
+	</delete>
+	
+	<update id="update" parameterType="com.kaka.base.domain.District">
+		update sys_district
+			set name = #{name}, update_by = #{updateBy}
+		where id = #{id}
+	</update>
+	
+	<select id="queryAll" resultType="com.kaka.base.domain.District">
+		SELECT 
+			id, name, memo
+		FROM
+			sys_district
+	</select>
+
+	<select id="get" resultType="com.kaka.base.domain.District">
+		SELECT 
+			id, name, memo
+		FROM
+			sys_district
+		where id = #{id}
+	</select>
+</mapper>

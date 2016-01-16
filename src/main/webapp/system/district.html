@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>kaka's base project</title>
+<link rel="stylesheet" type="text/css" href="easyui/themes/metro/easyui.css">
+<link rel="stylesheet" type="text/css" href="easyui/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="css/common.css">
+<script type="text/javascript" src="easyui/jquery.min.js"></script>
+<script type="text/javascript" src="easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="easyui/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/areas.js"></script>
+</head>
+<body>
+	<table id="districtGrid" class="easyui-datagrid"
+		data-options="fit:true,rownumbers:true,singleSelect:true,toolbar:toolbar">
+		<thead>
+			<tr>
+				<th data-options="field:'name',width:280">分区名称</th>
+				<th data-options="field:'id',width:180,formatter:operateFmt">操作</th>
+			</tr>
+		</thead>
+	</table>
+
+	<div id="dlg" class="easyui-dialog" style="width: 580px; height: 460px; padding: 10px"
+		data-options=" modal: true, closed: true,
+                buttons: [{
+                    text:'保 存 ',
+                    iconCls:'icon-ok',
+                    handler:save
+                },{
+                    text:'取 消',
+                    handler:cancel
+                }] ">
+		<form id='ff'>
+			<table>
+				<tr>
+					<td class="fromTitle">分区名称：</td>
+					<td><input id="districtName" name="districtName" class="easyui-textbox" type="text" data-options="required:true"></input></td>
+				</tr>
+				<tr>
+					<td class="fromTitle"></td>
+					<td><select id="s_province" name="s_province"></select> <select id="s_city" name="s_city"></select> <select
+						id="s_county" name="s_county"></select> <a href="javascript:void(0)" onclick="addArea()">添加</a></td>
+				</tr>
+				<tr>
+					<td class="fromTitle">管辖范围：</td>
+					<td><div id="dl" class="easyui-datalist" style="width: 400px; min-height: 300px"
+							data-options="textFormatter:areasFmt"></div></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<script type="text/javascript">
+		var disId = null;
+		var areas = new Array();
+		var toolbar = [ {
+			text : '新增',
+			iconCls : 'icon-add',
+			handler : add
+		} ];
+
+		$(function() {
+			queryDistrict();
+			_init_area();
+		})
+
+		function queryDistrict() {
+			sendPOST("district/all.kk", null, function(data) {
+				$("#districtGrid").datagrid({
+					data : data
+				});
+			})
+		}
+
+		function add() {
+			districtId = null;
+			$('#dlg').dialog({
+				title : '新增分区'
+			});
+			$('#ff').form('load', {
+				districtName : ""
+			});
+			areas = new Array();
+			$('#dl').datalist({
+				data : areas
+			});
+			$('#dlg').dialog('open');
+		}
+
+		function edit(id) {
+			districtId = id;
+			$('#dlg').dialog({
+				title : '编辑分区'
+			});
+			sendPOST("district/get.kk", {
+				id : id
+			}, function(data) {
+				$('#ff').form('load', {
+					districtName : data.name
+				});
+				areas = data.districtAreas;
+				$('#dl').datalist({
+					data : areas
+				});
+				$('#dlg').dialog('open');
+			})
+		}
+
+		function save() {
+			var districtName = $('#districtName').val().trim();
+			if (!districtName) {
+				showMsg("分区名称不能为空");
+				return;
+			}
+			if (areas.length == 0) {
+				showMsg("管辖范围不能为空");
+				return;
+			}
+			var url = null;
+			if (!districtId) {
+				url = "district/create.kk";
+			} else {
+				url = "district/update.kk";
+			}
+			sendPOST(url, {
+				id : districtId,
+				name : districtName,
+				areas : JSON.stringify(areas)
+			}, function(data) {
+				queryDistrict();
+				$('#dlg').dialog('close');
+				showMsg("操作成功");
+			})
+		}
+
+		function del(id) {
+			$.messager.confirm('确认', '确定删除吗?', function(r) {
+				if (r) {
+					sendPOST("district/delete.kk", {
+						id : id
+					}, function(data) {
+						queryDistrict();
+						showMsg("操作成功");
+					})
+				}
+			});
+		}
+
+		function addArea() {
+			if (!$('#s_province').val()) {
+				showMsg("请选择省");
+				return;
+			}
+			if (!$('#s_city').val()) {
+				showMsg("请选择市");
+				return;
+			}
+			if (!$('#s_county').val()) {
+				showMsg("请选择区");
+				return;
+			}
+			for (var i = 0; i < areas.length; i++) {
+				if (areas[i].area == $('#s_county').val()) {
+					showMsg("该区已添加");
+					return;
+				}
+			}
+			var t = {
+				province : $('#s_province').val(),
+				city : $('#s_city').val(),
+				area : $('#s_county').val()
+			}
+			areas.push(t);
+			$('#dl').datalist({
+				data : areas
+			});
+		}
+
+		function operateFmt(val) {
+			return '<a href="javascript:void(0)" onclick="edit(' + val + ')">编辑</a>'
+					+ ' <a href="javascript:void(0)" onclick="del(' + val + ')">删除</a>';
+		}
+
+		function areasFmt(val, row, index) {
+			var text = areas[index].province + " - " + areas[index].city + " - " + areas[index].area;
+			return text + ' <a href="javascript:void(0)" onclick="delArea(' + index + ')">删除</a>';
+		}
+
+		function delArea(index) {
+			areas.splice(index, 1);
+			$('#dl').datalist({
+				data : areas
+			});
+		}
+
+		function cancel() {
+			$('#dlg').dialog('close');
+		}
+	</script>
+</body>
+</html>

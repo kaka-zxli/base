@@ -1,6 +1,5 @@
 package com.kaka.base.test;
 
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 
 import org.apache.commons.codec.binary.Hex;
@@ -23,7 +22,7 @@ public class SocketClientTest {
 		connector.getFilterChain().addLast("codec", new ProtocolCodecFilter(new ByteArrayCoderFactory()));
 		IoSession session = null;
 		try {
-			ConnectFuture future = connector.connect(new InetSocketAddress(InetAddress.getLocalHost(), 30996));// 创建连接
+			ConnectFuture future = connector.connect(new InetSocketAddress("120.24.242.251", 30996));// 创建连接
 			future.awaitUninterruptibly();// 等待连接创建完成
 			session = future.getSession();// 获得session
 			session.write(Hex.decodeHex("5A14A10000001100000022660000000000004455".toCharArray()));// 发送消息
@@ -31,7 +30,7 @@ public class SocketClientTest {
 			e.printStackTrace();
 		}
 		
-//        session.getCloseFuture().awaitUninterruptibly();// 等待连接断开
+        session.getCloseFuture().awaitUninterruptibly();// 等待连接断开
 		connector.dispose();
 
 		System.out.println("end");
