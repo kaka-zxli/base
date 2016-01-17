@@ -13,11 +13,8 @@ public class ByteArrayEncoder extends ProtocolEncoderAdapter {
 
 	@Override
 	public void encode(IoSession session, Object message, ProtocolEncoderOutput out) throws Exception {
-		System.out.println("---------encode-------------");
-
 		byte[] bytes = (byte[]) message;
-		IoBuffer buffer = IoBuffer.allocate(bytes.length);
-		buffer.setAutoExpand(true);
+		IoBuffer buffer = IoBuffer.allocate(bytes.length).setAutoExpand(true);
 		buffer.put(bytes);
 		buffer.flip();
 
@@ -29,6 +26,6 @@ public class ByteArrayEncoder extends ProtocolEncoderAdapter {
 
 	@Override
 	public void dispose(IoSession session) throws Exception {
-		logger.info("Dispose called,session is " + session);
+		logger.info("Dispose called, session is " + session);
 	}
 }

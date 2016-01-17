@@ -9,10 +9,17 @@ public class ByteArrayDecoder extends ProtocolDecoderAdapter {
 
 	@Override
 	public void decode(IoSession session, IoBuffer in, ProtocolDecoderOutput out) throws Exception {
-		System.out.println("doDecode --------------" + session.getId());
 		int limit = in.limit();
-		byte[] bytes = new byte[limit];
-		in.get(bytes);
-		out.write(bytes);
+		int count = limit / MsgConstant.MSG_LENGTH;
+		for (int i = 0; i < count; i++) {
+			byte[] bytes = new byte[MsgConstant.MSG_LENGTH];
+			in.get(bytes);
+			out.write(bytes);
+		}
+		if (limit % MsgConstant.MSG_LENGTH != 0) {
+			byte[] bytes = new byte[limit % MsgConstant.MSG_LENGTH];
+			in.get(bytes);
+			out.write(bytes);
+		}
 	}
 }
