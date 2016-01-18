@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>kaka's base project</title>
+<link rel="stylesheet" type="text/css" href="easyui/themes/metro/easyui.css">
+<link rel="stylesheet" type="text/css" href="easyui/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="css/common.css">
+<script type="text/javascript" src="easyui/jquery.min.js"></script>
+<script type="text/javascript" src="easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="easyui/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/areas.js"></script>
+</head>
+<body>
+	<table id="streetGrid" class="easyui-datagrid"
+		data-options="url:'street/page.kk',border:false,fit:true,rownumbers:true,singleSelect:true,toolbar:'#toolbar',pagination:true">
+		<thead>
+			<tr>
+				<th data-options="field:'name',width:280">街道名称</th>
+				<th data-options="field:'area',width:280,formatter:areaFmt">所属区域</th>
+				<th data-options="field:'id',width:180,formatter:operateFmt">操作</th>
+			</tr>
+		</thead>
+	</table>
+
+	<div id="toolbar" style="padding: 5px 5px;">
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" onclick="add()">新增</a>
+		<div style="padding-left: 150px; display: inline;">
+			街道名称： <input id="sbox" class="easyui-textbox" style="height: 26px;"> <a href="javascript:void(0)"
+				class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="queryStreet()">查询</a>
+		</div>
+	</div>
+
+	<div id="dlg" class="easyui-dialog" style="width: 580px; height: 320px; padding: 10px"
+		data-options=" modal: true, closed: true,
+                buttons: [{
+                    text:'保 存 ',
+                    iconCls:'icon-ok',
+                    handler:save
+                },{
+                    text:'取 消',
+                    handler:cancel
+                }] ">
+		<form id='ff'>
+			<table>
+				<tr>
+					<td class="fromTitle">街道名称：</td>
+					<td><input id="streetName" name="streetName" class="easyui-textbox" type="text" data-options="required:true"></input></td>
+				</tr>
+				<tr>
+					<td class="fromTitle">所属区域：</td>
+					<td><select id="s_province" name="s_province"></select> <select id="s_city" name="s_city"></select> <select
+						id="s_county" name="s_county"></select></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<script type="text/javascript">
+		var streetId = null;
+
+		$(function() {
+			_init_area();
+		})
+
+		function queryStreet() {
+			$("#streetGrid").datagrid("reload", {
+				name : $("#sbox").val().trim()
+			});
+		}
+
+		function add() {
+			streetId = null;
+			$('#dlg').dialog({
+				title : '新增街道'
+			});
+			$('#ff').form('load', {
+				streetName : ""
+			});
+			$('#dlg').dialog('open');
+		}
+
+		function edit(id) {
+			streetId = id;
+			$('#dlg').dialog({
+				title : '编辑街道'
+			});
+			sendPOST("street/get.kk", {
+				id : id
+			}, function(data) {
+				$('#ff').form('load', {
+					streetName : data.name,
+					s_province : data.province
+				});
+				change(1);
+				$('#ff').form('load', {
+					s_city : data.city
+				});
+				change(2);
+				$('#ff').form('load', {
+					s_county : data.area
+				});
+				$('#dlg').dialog('open');
+			})
+		}
+
+		function save() {
+			var streetName = $('#streetName').val().trim();
+			if (!streetName) {
+				showMsg("街道名称不能为空");
+				return;
+			}
+			if (!$('#s_province').val()) {
+				showMsg("请选择省");
+				return;
+			}
+			if (!$('#s_city').val()) {
+				showMsg("请选择市");
+				return;
+			}
+			if (!$('#s_county').val()) {
+				showMsg("请选择区");
+				return;
+			}
+			var url = null;
+			if (!streetId) {
+				url = "street/create.kk";
+			} else {
+				url = "street/update.kk";
+			}
+			sendPOST(url, {
+				id : streetId,
+				name : streetName,
+				province : $('#s_province').val(),
+				city : $('#s_city').val(),
+				area : $('#s_county').val()
+			}, function(data) {
+				queryStreet();
+				$('#dlg').dialog('close');
+				showMsg("操作成功");
+			})
+		}
+
+		function del(id) {
+			$.messager.confirm('确认', '确定删除吗?', function(r) {
+				if (r) {
+					sendPOST("street/delete.kk", {
+						id : id
+					}, function(data) {
+						queryStreet();
+						showMsg("操作成功");
+					})
+				}
+			});
+		}
+
+		function areaFmt(value, row, index) {
+			return row.province + " - " + row.city + " - " + row.area;
+		}
+
+		function operateFmt(val) {
+			return '<a href="javascript:void(0)" onclick="edit(' + val + ')">编辑</a>'
+					+ ' <a href="javascript:void(0)" onclick="del(' + val + ')">删除</a>';
+		}
+
+		function cancel() {
+			$('#dlg').dialog('close');
+		}
+	</script>
+</body>
+</html>

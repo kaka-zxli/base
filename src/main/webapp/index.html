@@ -19,8 +19,7 @@
 		<div id="leftNav" class="easyui-accordion" data-options="fit: true, border: false"></div>
 	</div>
 	<div data-options="region: 'center'">
-		<div id="mainTitle"></div>
-		<div id="mainPanel" class="easyui-panel" data-options="fit: true, border: false"></div>
+		<div id="mainPanel" class="easyui-panel" data-options="title: ' ', fit: true, border: false"></div>
 	</div>
 </body>
 <script type="text/javascript">
@@ -50,7 +49,7 @@
 				$("div[class='panel window']").remove();
 				$('.window-shadow').remove();
 				$('.window-mask').remove();
-				$("#mainTitle").text($(this).text());
+				$($("#mainPanel").parent()).find('.panel-title').text($(this).text());
 				$("#mainPanel").panel("refresh", $(this).attr("url"));
 			});
 		});
