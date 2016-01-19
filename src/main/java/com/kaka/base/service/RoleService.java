@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.kaka.base.dao.IRoleDao;
 import com.kaka.base.domain.Role;
 import com.kaka.base.domain.RoleMenu;
+import com.kaka.base.dto.PageDto;
 
 @Service
 public class RoleService {
@@ -42,7 +43,7 @@ public class RoleService {
 	@Transactional
 	public void update(Role domain, List<Long> menuIdList) {
 		roleDao.update(domain);
-		
+
 		roleMenuService.deleteByRole(domain.getId());
 
 		List<RoleMenu> list = new ArrayList<RoleMenu>();
@@ -70,5 +71,15 @@ public class RoleService {
 		result.put("memo", role.getMemo());
 		result.put("roleMenus", roleMenuService.queryByRole(id));
 		return result;
+	}
+
+	public PageDto<Role> queryByPage(String name, int pageIndex, int pageSize) {
+		int total = roleDao.getCount(name);
+		if (total <= 0) {
+			return new PageDto<Role>(total, new ArrayList<Role>());
+		}
+		int offset = pageSize * (pageIndex - 1);
+		List<Role> list = roleDao.queryByPage(name, pageSize, offset);
+		return new PageDto<Role>(total, list);
 	}
 }

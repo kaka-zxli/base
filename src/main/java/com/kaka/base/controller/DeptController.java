@@ -30,6 +30,12 @@ public class DeptController {
 		return JsonResponse.success(deptService.queryAll());
 	}
 
+	@RequestMapping("/page")
+	@ResponseBody
+	public JsonResponse queryByPage(String name, int page, int rows) {
+		return JsonResponse.success(deptService.queryByPage(name, page, rows));
+	}
+
 	@RequestMapping("/get")
 	@ResponseBody
 	public JsonResponse get(Long id) {
@@ -49,7 +55,7 @@ public class DeptController {
 		deptService.update(domain);
 		return JsonResponse.success();
 	}
-	
+
 	@RequestMapping("/all_tree")
 	@ResponseBody
 	public JsonResponse queryAllForTree() {

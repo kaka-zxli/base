@@ -49,6 +49,5 @@ public class StreetService {
 		int offset = pageSize * (pageIndex - 1);
 		List<Street> list = streetDao.queryByPage(name, pageSize, offset);
 		return new PageDto<Street>(total, list);
-
 	}
 }

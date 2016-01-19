@@ -1,5 +1,6 @@
 package com.kaka.base.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.kaka.base.dao.IDistrictDao;
 import com.kaka.base.domain.District;
 import com.kaka.base.domain.DistrictArea;
+import com.kaka.base.dto.PageDto;
 
 @Service
 public class DistrictService {
@@ -60,5 +62,15 @@ public class DistrictService {
 		result.put("memo", district.getMemo());
 		result.put("districtAreas", districtAreaService.queryByDistrict(id));
 		return result;
+	}
+	
+	public PageDto<District> queryByPage(String name, int pageIndex, int pageSize) {
+		int total = districtDao.getCount(name);
+		if (total <= 0) {
+			return new PageDto<District>(total, new ArrayList<District>());
+		}
+		int offset = pageSize * (pageIndex - 1);
+		List<District> list = districtDao.queryByPage(name, pageSize, offset);
+		return new PageDto<District>(total, list);
 	}
 }

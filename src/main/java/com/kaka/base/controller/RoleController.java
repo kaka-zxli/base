@@ -45,6 +45,12 @@ public class RoleController {
 		return JsonResponse.success(roleService.queryAll());
 	}
 
+	@RequestMapping("/page")
+	@ResponseBody
+	public JsonResponse queryByPage(String name, int page, int rows) {
+		return JsonResponse.success(roleService.queryByPage(name, page, rows));
+	}
+
 	@RequestMapping("/get")
 	@ResponseBody
 	public JsonResponse get(Long id) {

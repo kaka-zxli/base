@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kaka.base.dao.IDeptDao;
 import com.kaka.base.domain.Dept;
+import com.kaka.base.dto.PageDto;
 import com.kaka.base.exception.BusinessException;
 
 @Service
@@ -84,5 +85,15 @@ public class DeptService {
 			list.add(map);
 		}
 		return list;
+	}
+	
+	public PageDto<Dept> queryByPage(String name, int pageIndex, int pageSize) {
+		int total = deptDao.getCount(name);
+		if (total <= 0) {
+			return new PageDto<Dept>(total, new ArrayList<Dept>());
+		}
+		int offset = pageSize * (pageIndex - 1);
+		List<Dept> list = deptDao.queryByPage(name, pageSize, offset);
+		return new PageDto<Dept>(total, list);
 	}
 }

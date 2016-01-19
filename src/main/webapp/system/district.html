@@ -15,7 +15,7 @@
 </head>
 <body>
 	<table id="districtGrid" class="easyui-datagrid"
-		data-options="border:false,fit:true,rownumbers:true,singleSelect:true,toolbar:toolbar">
+		data-options="url:'district/page.kk',border:false,fit:true,rownumbers:true,singleSelect:true,toolbar:'#toolbar',pagination:true">
 		<thead>
 			<tr>
 				<th data-options="field:'name',width:280">分区名称</th>
@@ -23,6 +23,14 @@
 			</tr>
 		</thead>
 	</table>
+	
+	<div id="toolbar" style="padding: 5px 5px;">
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" onclick="add()">新增</a>
+		<div style="padding-left: 150px; display: inline;">
+			分区名称： <input id="sbox" class="easyui-textbox" style="height: 26px;"> <a href="javascript:void(0)"
+				class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="queryDistrict()">查询</a>
+		</div>
+	</div>
 
 	<div id="dlg" class="easyui-dialog" style="width: 580px; height: 460px; padding: 10px"
 		data-options=" modal: true, closed: true,
@@ -57,23 +65,15 @@
 	<script type="text/javascript">
 		var disId = null;
 		var areas = new Array();
-		var toolbar = [ {
-			text : '新增',
-			iconCls : 'icon-add',
-			handler : add
-		} ];
 
 		$(function() {
-			queryDistrict();
 			_init_area();
 		})
 
 		function queryDistrict() {
-			sendPOST("district/all.kk", null, function(data) {
-				$("#districtGrid").datagrid({
-					data : data
-				});
-			})
+			$("#districtGrid").datagrid("reload", {
+				name : $("#sbox").val().trim()
+			});
 		}
 
 		function add() {

@@ -36,72 +36,30 @@
 		where id = #{id}
 	</select>
 
-<!-- 	<update id="updateOrderStatus" parameterType="com.ihome.mf.order.dto.OrderStatusParam"> -->
-<!-- 		update mf_biz_order -->
-<!-- 			set  -->
-<!-- 				<if test="failureReason != null"> -->
-<!-- 					failure_reason = #{failureReason}, -->
-<!-- 				</if> -->
-<!-- 				<if test="endTime != null"> -->
-<!-- 					end_time = #{endTime}, -->
-<!-- 				</if> -->
-<!-- 				<if test="payTime != null"> -->
-<!-- 					pay_time = #{payTime}, -->
-<!-- 				</if> -->
-<!-- 				<if test="compensateStatus != null"> -->
-<!-- 					refund_status = #{compensateStatus}, -->
-<!-- 				</if> -->
-<!-- 				order_status = #{status} -->
-<!-- 		where customer_id = #{customerId} -->
-<!-- 			and order_no = #{orderNo} -->
-<!-- 	</update> -->
+	<select id="queryByPage" resultType="com.kaka.base.domain.Role">
+		SELECT 
+			id, name, memo
+		FROM
+			sys_role
+		<where>
+			<include refid="condition" />
+		</where>
+		LIMIT #{pageSize} offset #{offset}
+	</select>
 	
-<!-- 	<select id="querySuccessOrderByPage" resultMap="orderMap"> -->
-<!-- 		select -->
-<!-- 			<include refid="baseColumnList"></include> -->
-<!-- 		from mf_biz_order  -->
-<!-- 		where  -->
-<!-- 			<include refid="successOrderCondition" /> -->
-<!-- 	</select> -->
-<!-- 	<select id="querySuccessOrderCount" resultType="java.lang.Integer"> -->
-<!-- 		SELECT COUNT(1) as s -->
-<!-- 		FROM -->
-<!-- 			mf_biz_order  -->
-<!-- 		WHERE -->
-<!-- 			<include refid="successOrderCondition" /> -->
-<!-- 	</select> -->
-<!-- 	<sql id="successOrderCondition"> -->
-<!-- 	   ((type=#{params.purchase}  and order_status in -->
-<!-- 		 <foreach item="item" index="index" collection="params.purstatusList" open="(" separator="," close=")"> -->
-<!-- 		    	#{item} -->
-<!-- 			</foreach>  )  -->
-<!-- 		  or ( type=#{params.redeem} and order_status in -->
-<!-- 		 <foreach item="item" index="index" collection="params.redstatusList" open="(" separator="," close=")"> -->
-<!-- 		    	#{item} -->
-<!-- 			</foreach> -->
-<!-- 		  ) -->
-<!-- 		  or ( type=#{params.soon_redeem} and order_status in -->
-<!-- 		  <foreach item="item" index="index" collection="params.fastredstatusList" open="(" separator="," close=")"> -->
-<!-- 		    	#{item} -->
-<!-- 			</foreach> -->
-<!-- 		  )) -->
-<!-- 			and pay_time &gt;=#{params.starttime}  -->
-<!-- 			and pay_time &lt;#{params.endtime} -->
-<!-- 	</sql> -->
+	<select id="getCount" resultType="java.lang.Integer">
+		SELECT
+			COUNT(1)
+		FROM
+			sys_role
+		<where>
+			<include refid="condition" />
+		</where>
+	</select>
 	
-<!-- 	<select id="getCustomerDayTotal" resultType="java.lang.Long"> -->
-<!-- 		SELECT -->
-<!-- 			sum(amount) as amount -->
-<!-- 		FROM -->
-<!-- 			mf_biz_order -->
-<!-- 		where -->
-<!-- 			customer_id = #{customerId} -->
-<!-- 			and type = #{orderType} -->
-<!-- 			and pay_time &gt;= #{startTime} -->
-<!-- 			and pay_time &lt; #{endTime} -->
-<!-- 			and order_status in -->
-<!-- 				<foreach item="item" index="index" collection="statusList" open="(" separator="," close=")"> -->
-<!-- 			    	#{item} -->
-<!-- 				</foreach> -->
-<!-- 	</select> -->
+	<sql id="condition">
+		<if test="null!=name and ''!=name">
+			and name like CONCAT('%',#{name},'%')
+		</if>
+	</sql>
 </mapper>

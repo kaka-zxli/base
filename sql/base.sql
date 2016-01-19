@@ -41,6 +41,7 @@ INSERT INTO `sys_menu` VALUES ('500003', '500', '路灯管理', 'monitor/streetl
 INSERT INTO `sys_menu` VALUES ('800001', '800', '账户管理', 'system/user.html', null, '1', null);
 INSERT INTO `sys_menu` VALUES ('800002', '800', '部门管理', 'system/dept.html', null, '2', null);
 INSERT INTO `sys_menu` VALUES ('800003', '800', '角色管理', 'system/role.html', null, '3', null);
+INSERT INTO `sys_menu` VALUES ('800004', '800', '街道管理', 'system/street.html', null, '4', null);
 INSERT INTO `sys_menu` VALUES ('800005', '800', '分区管理', 'system/district.html', null, '5', null);
 
 -- ----------------------------
@@ -96,3 +97,21 @@ CREATE TABLE `sys_district_area` (
   `area` varchar(64) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for sys_street
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_street`;
+CREATE TABLE `sys_street` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(128) NOT NULL,
+  `memo` varchar(512) DEFAULT NULL,
+  `province` varchar(64) DEFAULT NULL,
+  `city` varchar(64) DEFAULT NULL,
+  `area` varchar(64) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `create_by` varchar(128) DEFAULT NULL,
+  `update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `update_by` varchar(128) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;

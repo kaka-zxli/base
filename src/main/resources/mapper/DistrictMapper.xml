@@ -35,4 +35,31 @@
 			sys_district
 		where id = #{id}
 	</select>
+	
+	<select id="queryByPage" resultType="com.kaka.base.domain.District">
+		SELECT 
+			id, name, memo
+		FROM
+			sys_district
+		<where>
+			<include refid="condition" />
+		</where>
+		LIMIT #{pageSize} offset #{offset}
+	</select>
+	
+	<select id="getCount" resultType="java.lang.Integer">
+		SELECT
+			COUNT(1)
+		FROM
+			sys_district
+		<where>
+			<include refid="condition" />
+		</where>
+	</select>
+	
+	<sql id="condition">
+		<if test="null!=name and ''!=name">
+			and name like CONCAT('%',#{name},'%')
+		</if>
+	</sql>
 </mapper>
